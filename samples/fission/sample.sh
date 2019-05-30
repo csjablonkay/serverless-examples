@@ -27,7 +27,7 @@ curl http://$FISSION_ROUTER/increment2
 
 #Get log
 kubectl --namespace fission-function get pod -l functionName=incrementer2
-kubectl --namespace fission-function logs newdeploy-incrementer2-default-wye74wob-6dd6f5b757-5f4nq incrementer2
+kubectl --namespace fission-function logs <name> incrementer2
 
 #Remove resources
 fission route delete --name incrementer2
