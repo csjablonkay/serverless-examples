@@ -1,0 +1,15 @@
+apiVersion: fission.io/v1
+kind: HTTPTrigger
+metadata:
+  creationTimestamp: null
+  name: viewer
+  namespace: default
+spec:
+  createingress: false
+  functionref:
+    functionweights: null
+    name: viewer
+    type: name
+  host: ""
+  method: GET
+  relativeurl: /view

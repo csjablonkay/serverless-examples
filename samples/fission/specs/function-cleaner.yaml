@@ -1,0 +1,53 @@
+include:
+- cleaner.fission-0.0.1-SNAPSHOT-shaded.jar
+kind: ArchiveUploadSpec
+name: cleaner-fission-0-0-1-snapshot-shaded-jar-Oh5N
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: cleaner-fission-0-0-1-snapshot-shaded-jar-35y7
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+    type: url
+    url: archive://cleaner-fission-0-0-1-snapshot-shaded-jar-Oh5N
+  environment:
+    name: jvm
+    namespace: default
+  source:
+    checksum: {}
+status:
+  buildstatus: none
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: cleaner
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: poolmgr
+      MaxScale: 0
+      MinScale: 0
+      TargetCPUPercent: 0
+    StrategyType: execution
+  configmaps:
+  - name: hello
+    namespace: default
+  environment:
+    name: jvm
+    namespace: default
+  package:
+    functionName: csana.cleaner.fission.Fission
+    packageref:
+      name: cleaner-fission-0-0-1-snapshot-shaded-jar-35y7
+      namespace: default
+  resources: {}
+  secrets: null

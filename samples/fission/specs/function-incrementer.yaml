@@ -1,0 +1,53 @@
+include:
+- incrementer.fission-0.0.1-SNAPSHOT-shaded.jar
+kind: ArchiveUploadSpec
+name: incrementer-fission-0-0-1-snapshot-shaded-jar-4iDY
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: incrementer-fission-0-0-1-snapshot-shaded-jar-nrbj
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+    type: url
+    url: archive://incrementer-fission-0-0-1-snapshot-shaded-jar-4iDY
+  environment:
+    name: jvm
+    namespace: default
+  source:
+    checksum: {}
+status:
+  buildstatus: none
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: incrementer
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 1
+      MinScale: 1
+      TargetCPUPercent: 80
+    StrategyType: execution
+  configmaps:
+  - name: hello
+    namespace: default
+  environment:
+    name: jvm
+    namespace: default
+  package:
+    functionName: csana.incrementer.fission.Fission
+    packageref:
+      name: incrementer-fission-0-0-1-snapshot-shaded-jar-nrbj
+      namespace: default
+  resources: {}
+  secrets: null

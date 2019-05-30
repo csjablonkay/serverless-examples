@@ -1,0 +1,24 @@
+apiVersion: fission.io/v1
+kind: Environment
+metadata:
+  creationTimestamp: null
+  name: jvm
+  namespace: default
+spec:
+  TerminationGracePeriod: 360
+  builder: {}
+  keeparchive: true
+  poolsize: 3
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  runtime:
+    functionendpointport: 0
+    image: csjablonkay/fission-undertow-jvm-env
+    loadendpointpath: ""
+    loadendpointport: 0
+  version: 2

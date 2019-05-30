@@ -1,0 +1,53 @@
+include:
+- viewer.fission-0.0.1-SNAPSHOT-shaded.jar
+kind: ArchiveUploadSpec
+name: viewer-fission-0-0-1-snapshot-shaded-jar-vQhA
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: viewer-fission-0-0-1-snapshot-shaded-jar-c1ky
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+    type: url
+    url: archive://viewer-fission-0-0-1-snapshot-shaded-jar-vQhA
+  environment:
+    name: jvm
+    namespace: default
+  source:
+    checksum: {}
+status:
+  buildstatus: none
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: viewer
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: poolmgr
+      MaxScale: 0
+      MinScale: 0
+      TargetCPUPercent: 0
+    StrategyType: execution
+  configmaps:
+  - name: hello
+    namespace: default
+  environment:
+    name: jvm
+    namespace: default
+  package:
+    functionName: csana.viewer.fission.Fission
+    packageref:
+      name: viewer-fission-0-0-1-snapshot-shaded-jar-c1ky
+      namespace: default
+  resources: {}
+  secrets: null
