@@ -1,0 +1,66 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: redisclient-master
+spec:
+  selector:
+    matchLabels:
+      role: master
+      app: redisclient
+  serviceName: "redis-master"
+  template:
+    metadata:
+      labels:
+        app: redisclient
+        role: master
+    spec:
+      containers:
+      - name: redisclient
+        image: "docker.io/bitnami/redis:4.0.9"
+        imagePullPolicy: "Always"
+        env:
+        - name: REDIS_REPLICATION_MODE
+          value: master
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_DISABLE_COMMANDS
+          value: FLUSHDB,FLUSHALL
+        ports:
+        - name: redis
+          containerPort: 6379
+        livenessProbe:
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          exec:
+            command:
+            - redis-cli
+            - ping
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 5
+          exec:
+            command:
+            - redis-cli
+            - ping
+        volumeMounts:
+        - name: redis-data
+          mountPath: /bitnami/redis/data
+          subPath: 
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "3Gi"
+        storageClassName: "redis-class"

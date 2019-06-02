@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-fission spec destroy
+kubectl apply -f .

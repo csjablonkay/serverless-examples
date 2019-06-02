@@ -1,0 +1,28 @@
+provider:
+  name: openfaas
+  gateway: http://192.168.99.100:31112
+functions:
+  increment:
+    lang: dockerfile
+    handler: ./incrementer
+    image: csjablonkay/incrementer-openfaas:latest
+    environment:
+      REDIS_HOST: redisclient-master.default.svc.cluster.local
+      write_debug: true       
+    annotations:
+      topic: cron-function
+      schedule: "*/1 * * * *"
+  clean:
+    lang: dockerfile
+    handler: ./cleaner
+    image: csjablonkay/cleaner-openfaas:latest
+    environment:
+      REDIS_HOST: redisclient-master.default.svc.cluster.local
+      write_debug: true
+  view:
+    lang: dockerfile
+    handler: ./viewer
+    image: csjablonkay/viewer-openfaas:latest
+    environment:
+      REDIS_HOST: redisclient-slave.default.svc.cluster.local
+      write_debug: true
